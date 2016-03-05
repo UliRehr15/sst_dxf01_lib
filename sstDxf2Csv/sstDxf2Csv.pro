@@ -34,13 +34,10 @@ release{
   LIBS        += ../../libs/libdxflib_r.a
 }
 
-# HEADERS    += ./Header/sstTemplateApp.h
+HEADERS += \
+    sstdxf2csv.h
 
 SOURCES    += sstDxf2Csv.cpp
 
-
-
 TARGET	  	= sstDxf2Csv
 
-HEADERS += \
-    sstdxf2csv.h

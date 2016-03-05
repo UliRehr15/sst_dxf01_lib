@@ -77,25 +77,6 @@ void sstDxf01TypBlkCls::WritToDL(DL_BlockData *poDlBlk)
     poDlBlk->flags = this->getFlags();
 }
 //=============================================================================
-//  sstDxf01Fnc.cpp   12.03.13  Re.   12.03.13  Re.
-//
-//  Functions for Class "sstDxf01Fnc"
-//
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-
-#include <string>
-
-#include <dl_creationadapter.h>
-
-#include <sstStr01Lib.h>
-#include <sstMisc01Lib.h>
-#include <sstRec04Lib.h>
-#include <sstDxf01Lib.h>
-
 // Constructor
 sstDxf01FncBlkCls::sstDxf01FncBlkCls()
 {
@@ -186,11 +167,11 @@ int sstDxf01FncBlkCls::Csv_WriteHeader(int iKey, std::string *ssstDxfLib_Str)
   ssstDxfLib_Str->clear();
 
   oTitelStr = "BlockID";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "name";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "flags";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
 
   // Fatal Errors goes to an assert
   if (iStat < 0)

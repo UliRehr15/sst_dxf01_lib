@@ -292,6 +292,7 @@ sstDxf2Csv.o: sstDxf2Csv.cpp ../../dxflib/Header/dl_dxf.h \
 		../../dxflib/Header/dl_creationinterface.h \
 		../../dxflib/Header/dl_extrusion.h \
 		../../sst_str01_lib/Header/sstStr01Lib.h \
+		../../sst_misc01_lib/Header/sstMisc01Lib.h \
 		../../sst_rec04_lib/Header/sstRec04Lib.h \
 		../Header/sstDxf01Lib.h \
 		sstdxf2csv.h

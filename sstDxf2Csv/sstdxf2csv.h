@@ -19,8 +19,6 @@
 #ifndef SSTDXF2CSV_HEADER
 #define SSTDXF2CSV_HEADER
 
-void usage();
-// void testWriting();
 
 
 //==============================================================================
@@ -38,7 +36,7 @@ void usage();
 * @date 09.07.15
 */
 // ----------------------------------------------------------------------------
-class sstDxf2CsvCls
+class sstDxf2CsvCls : public sstMisc01PrtFilCls
 {
   public:   // Public functions
      sstDxf2CsvCls();  // Constructor
@@ -56,9 +54,10 @@ class sstDxf2CsvCls
      */
      // ----------------------------------------------------------------------------
      void testReading(char* file);
+     void usage();
+     // sstMisc01PrtFilCls oPrt; /**< output protocol file */
 // ----------------------------------------------------------------------------
   private:  // Private functions
-  int Dum;        /**< Dummy */
 };
 //-----------------------------------------------------------------------------
 

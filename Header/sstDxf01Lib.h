@@ -32,24 +32,67 @@
 
 //==============================================================================
 /**
-* @brief Definition Class sstDxf01TypArcCls
+* @brief sst dxf base class for dxf types
 *
 * More Comment
 *
-* Changed: 12.03.13  Re.
+* Changed: 03.03.16  Re.
 *
 * @ingroup sstDxf01Lib
 *
 * @author Re.
 *
-* @date 12.03.13
+* @date 03.03.16
 **/
 //------------------------------------------------------------------------
 class sstDxf01TypBaseCls
 {
   public:
     sstDxf01TypBaseCls();  // Constructor
-  private:
+    //==============================================================================
+    /**
+    * @brief // Get Cx Value  <BR>
+    *
+    * @return Cx
+    */
+    // ----------------------------------------------------------------------------
+    int getColor() const;
+    //==============================================================================
+    /**
+    * @brief // Set Cx Value  <BR>
+    *
+    * @param value [in] Set Cx
+    */
+    // ----------------------------------------------------------------------------
+    void setColor(int value);
+    //==============================================================================
+    /**
+    * @brief // read attribu data from dxflib arc <BR>
+    * oSstDxfArc.BaseReadFromDL(oDLAttrib);
+    *
+    * @param oDLAttrib [in] dxflib attribut structure
+    */
+    // ----------------------------------------------------------------------------
+    void BaseReadFromDL(const DL_Attributes oDLAttrib);
+    //==============================================================================
+    /**
+    * @brief // write attribute data to dxflib attribut <BR>
+    * oSstDxfBase.BaseWritToDL(poDLAttrib);
+    *
+    * @param poDLAttrib [out] dxflib arc structure
+    */
+    // ----------------------------------------------------------------------------
+    void BaseWritToDL(DL_Attributes *poDLAttrib);
+
+private:
+    // standard attributes
+    // std::string layer;
+    int color;
+    int color24;
+    int width;
+    // std::string lineType;
+    int handle;
+
 };
 
 
@@ -87,29 +130,21 @@ class sstDxf01TypArcCls : public sstDxf01TypBaseCls
     int SetTestData(int iKey);
     //==============================================================================
     /**
-    * @brief // Shortstory <BR>
+    * @brief // read arc data from dxflib arc <BR>
     * oSstDxfArc.ReadFromDL(poDLArc);
     *
     * @param poDLArc [in] dxflib arc structure
-    *
-    * @return Errorstate
-    *
-    * @retval   = 0: OK
-    * @retval   < 0: Unspecified Error
     */
+    // ----------------------------------------------------------------------------
     void ReadFromDL(const DL_ArcData poDLArc);
     //==============================================================================
     /**
-    * @brief // Shortstory <BR>
+    * @brief // write arc data to dxflib arc <BR>
     * oSstDxfArc.WritToDL(poDLArc);
     *
     * @param poDLArc [out] dxflib arc structure
-    *
-    * @return Errorstate
-    *
-    * @retval   = 0: OK
-    * @retval   < 0: Unspecified Error
     */
+    // ----------------------------------------------------------------------------
     void WritToDL(DL_ArcData *poDLArc);
     //==============================================================================
     /**
@@ -241,9 +276,22 @@ class sstDxf01TypArcCls : public sstDxf01TypBaseCls
     // ----------------------------------------------------------------------------
     void setBlockID(unsigned long value);
     //==============================================================================
-
+    /**
+    * @brief // Get Arc ID  <BR>
+    *
+    * @return unsigned long Arc ID
+    */
+    // ----------------------------------------------------------------------------
     unsigned long getArcID() const;
+    //==============================================================================
+    /**
+    * @brief // Set Arc ID  <BR>
+    *
+    * @param value [in] Arc ID
+    */
+    // ----------------------------------------------------------------------------
     void setArcID(unsigned long value);
+    //==============================================================================
 
 private:
     unsigned long ulArcID;
@@ -255,6 +303,13 @@ private:
     double radius;
     double angle1;
     double angle2;
+    // standard attributes
+    std::string layer;
+    int color;
+    int color24;
+    int width;
+    std::string lineType;
+    int handle;
 };
 //==============================================================================
 /**
@@ -279,7 +334,7 @@ class sstDxf01TypLayCls
      //==============================================================================
      /**
      * @brief // Shortstory <BR>
-     * oTestBase.Func_1(iKey)
+     * oSstDxfLay.Func_1(iKey)
      *
      * @param cName [in] Set Name
      */
@@ -288,7 +343,7 @@ class sstDxf01TypLayCls
      //==============================================================================
      /**
      * @brief // Shortstory <BR>
-     * oTestBase.Func_1(iKey)
+     * oSstDxfLay.Func_1(iKey)
      *
      * @return char Name
      */
@@ -297,7 +352,7 @@ class sstDxf01TypLayCls
      //==============================================================================
      /**
      * @brief // Shortstory <BR>
-     * oTestBase.Func_1(iKey)
+     * oSstDxfLay.Func_1(iKey)
      *
      * @return int flags
      */
@@ -306,7 +361,7 @@ class sstDxf01TypLayCls
      //==============================================================================
      /**
      * @brief // Shortstory <BR>
-     * oTestBase.Func_1(iKey)
+     * oSstDxfLay.Func_1(iKey)
      *
      * @param value [in] Flags
      */
@@ -315,7 +370,7 @@ class sstDxf01TypLayCls
      //==============================================================================
      /**
      * @brief // Set Test Data <BR>
-     * iStat= oSstDxfArc.SetTestData(iKey);
+     * iStat= oSstDxfLay.SetTestData(iKey);
      *
      * @param iKey [in] For the moment 0
      *
@@ -328,7 +383,7 @@ class sstDxf01TypLayCls
      //==============================================================================
      /**
      * @brief // Shortstory <BR>
-     * oSstDxfArc.ReadFromDL(poDLArc);
+     * oSstDxfLay.ReadFromDL(poDLArc);
      *
      * @param poDlLay [in] dxflib Layer structure
      */
@@ -347,14 +402,28 @@ class sstDxf01TypLayCls
      */
      void WritToDL(DL_LayerData *poDlLay);
      //==============================================================================
-
-
+     /**
+     * @brief // Get Layer ID <BR>
+     * ulLayerID = oSstDxfLay.GetLayerID();
+     *
+     * @return unsigned long Layer ID
+     */
+     // ----------------------------------------------------------------------------
      unsigned long getLayerID() const;
+     //==============================================================================
+     /**
+     * @brief // Set Layer ID <BR>
+     * oSstDxfLay.Func_1(iKey)
+     *
+     * @param value [in] Layer ID
+     */
+     // ----------------------------------------------------------------------------
      void setLayerID(unsigned long value);
+     //==============================================================================
 
+     char Nam[dSSTDXFLAYERNAMELEN]; /**< Layer Name */
 private:  // Private functions
      unsigned long ulLayerID;
-     char Nam[dSSTDXFLAYERNAMELEN]; /**< Layer Name */
   int flags;               /**< Layer flags. (1 = frozen, 2 = frozen by default, 4 = locked) */
 
 };
@@ -382,7 +451,7 @@ class sstDxf01TypBlkCls
      //==============================================================================
      /**
      * @brief // Shortstory <BR>
-     * oTestBase.Func_1(iKey)
+     * oSstDxfBlk.Func_1(iKey)
      *
      * @param cName [in] For the moment 0
      */
@@ -391,7 +460,7 @@ class sstDxf01TypBlkCls
      //==============================================================================
      /**
      * @brief // Shortstory <BR>
-     * oTestBase.Func_1(iKey)
+     * oSstDxfBlk.Func_1(iKey)
      *
      * @return char Name
      */
@@ -400,7 +469,7 @@ class sstDxf01TypBlkCls
      //==============================================================================
      /**
      * @brief // Shortstory <BR>
-     * oTestBase.Func_1(iKey)
+     * oSstDxfBlk.Func_1(iKey)
      *
      * @return int flags
      */
@@ -409,7 +478,7 @@ class sstDxf01TypBlkCls
      //==============================================================================
      /**
      * @brief // Shortstory <BR>
-     * oTestBase.Func_1(iKey)
+     * oSstDxfBlk.Func_1(iKey)
      *
      * @param value [in] Flags
      */
@@ -418,7 +487,7 @@ class sstDxf01TypBlkCls
      //==============================================================================
      /**
      * @brief // Set Test Data <BR>
-     * iStat= oSstDxfArc.SetTestData(iKey);
+     * iStat= oSstDxfBlk.SetTestData(iKey);
      *
      * @param iKey [in] For the moment 0
      *
@@ -445,15 +514,29 @@ class sstDxf01TypBlkCls
      */
      void WritToDL(DL_BlockData *poDlBlk);
      //==============================================================================
-
-// ----------------------------------------------------------------------------
+     /**
+     * @brief // Get Block ID <BR>
+     * oSstDxfBlk.Func_1(iKey)
+     *
+     * @return unsigned long ulBlockID
+     */
+     // ----------------------------------------------------------------------------
      unsigned long getBlockID() const;
+     //==============================================================================
+     /**
+     * @brief // Set Block ID <BR>
+     * oSstDxfBlk.Func_1(iKey)
+     *
+     * @param value [in] Block ID
+     */
+     // ----------------------------------------------------------------------------
      void setBlockID(unsigned long value);
+     //==============================================================================
 
+     char Nam[dSSTDXFBLOCKNAMELEN];  /**< Block Name */
 private:  // Private functions
      unsigned long ulBlockID;
-     char Nam[dSSTDXFBLOCKNAMELEN];  /**< Block Name */
-  int  flags;               /**< Block Flags */
+     int  flags;               /**< Block Flags */
   // D3Pkt_stru Pkt;           /**< Block center point */
 
 };
@@ -755,6 +838,13 @@ public:
     virtual void addBlock(const DL_BlockData& data);
     //==============================================================================
     /**
+    * @brief // process end block situation <BR>
+    * oSstDxfReadDL.endBlock()
+    */
+    // ----------------------------------------------------------------------------
+    virtual void endBlock();
+    //==============================================================================
+    /**
     * @brief // Process imported Layer data <BR>
     * oSstDxfReadDL.addLayer(data)
     *
@@ -816,7 +906,6 @@ public:
     */
     // ----------------------------------------------------------------------------
     virtual void add3dFace(const DL_3dFaceData& data);
-
     //==============================================================================
     /**
     * @brief // Print Attributes <BR>
@@ -824,15 +913,29 @@ public:
     */
     // ----------------------------------------------------------------------------
     void printAttributes();
+    //==============================================================================
+    /**
+    * @brief // Set Dxf File Name into object <BR>
+    * oSstDxfReadDL.SetDxfFilNam(cDxfFilNam);
+    *
+    * @param cDxfFilNam [in] Set Dxf File Name
+    *
+    */
+    // ----------------------------------------------------------------------------
+    void SetDxfFilNam(char* cDxfFilNam);
+    //==============================================================================
 private:
     sstRec04Cls *poDxfArcMem;  /**< record memory for sst dxf arc elements */
     sstRec04Cls *poDxfLayMem;  /**< record memory for sst dxf layer elements */
     sstRec04Cls *poDxfBlkMem;  /**< record memory for sst dxf block elements */
+    std::string oDxfFilNam;    /**< dxf file name without extension */
+    std::string oActBlockNam;    /**< actual block name */
+    sstRec04TreeKeyCls oLayerTree;
+    sstRec04TreeKeyCls oBlockTree;
 };
  
 #endif
 //
 // --------------------------------------------------------------- File End ----
-
 
 

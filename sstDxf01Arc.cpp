@@ -71,12 +71,12 @@ void sstDxf01TypArcCls::ReadFromDL(const DL_ArcData oDLArc)
 }
 void sstDxf01TypArcCls::WritToDL(DL_ArcData *poDLArc)
 {
-    poDLArc->cx = this->cx;
-    poDLArc->cy = this->cy;
-    poDLArc->cz = this->cz;
-    poDLArc->radius = this->radius;
-    poDLArc->angle1 = this->angle1;
-    poDLArc->angle2 = this->angle2;
+  poDLArc->cx = this->cx;
+  poDLArc->cy = this->cy;
+  poDLArc->cz = this->cz;
+  poDLArc->radius = this->radius;
+  poDLArc->angle1 = this->angle1;
+  poDLArc->angle2 = this->angle2;
 }
 double sstDxf01TypArcCls::getCx() const
 {
@@ -243,6 +243,8 @@ int sstDxf01FncArcCls::Csv_Write(int iKey, sstDxf01TypArcCls *poSstARC, std::str
     iStat = oCsvRow.Csv_Dbl_2String ( 0, poSstARC->getAngle1(), ssstDxfLib_Str);
   if (iStat >= 0)
     iStat = oCsvRow.Csv_Dbl_2String ( 0, poSstARC->getAngle2(), ssstDxfLib_Str);
+  if (iStat >= 0)
+    iStat = oCsvRow.Csv_Int2_2String ( 0, poSstARC->getColor(), ssstDxfLib_Str);
 
   return iStat;
 }
@@ -260,29 +262,32 @@ int sstDxf01FncArcCls::Csv_WriteHeader(int iKey, std::string *ssstDxfLib_Str)
 //  double radius;
 //  double angle1;
 //  double angle2;
+//  int    color;
 
   if ( iKey != 0) return -1;
 
   ssstDxfLib_Str->clear();
 
   oTitelStr = "ArcID";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "LayerID";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "BlockID";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "cx";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "cy";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "cz";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "radius";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "angle1";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
   oTitelStr = "angle2";
-  iStat = oCsvRow.Csv_Str_2String( 0, &oTitelStr, ssstDxfLib_Str);
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
+  oTitelStr = "color";
+  iStat = oCsvRow.Csv_Str_2String( 0, oTitelStr, ssstDxfLib_Str);
 
   // Fatal Errors goes to an assert
   if (iStat < 0)

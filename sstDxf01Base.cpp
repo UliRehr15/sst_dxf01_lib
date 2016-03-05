@@ -34,12 +34,37 @@
 // Constructor
 sstDxf01TypBaseCls::sstDxf01TypBaseCls()
 {
-
+  this->color = 0; // int color;
+  this->color24 = 0;  // int color24;
+  this->width = 0;  // int width;
+  // std::string lineType;
+  this->handle = 0;  // int handle;
+}
+//=============================================================================
+int sstDxf01TypBaseCls::getColor() const
+{
+  return color;
+}
+//=============================================================================
+void sstDxf01TypBaseCls::setColor(int value)
+{
+  color = value;
+}
+//=============================================================================
+void sstDxf01TypBaseCls::BaseReadFromDL(const DL_Attributes oDLAttrib)
+{
+  this->color = oDLAttrib.getColor();
+}
+//=============================================================================
+void sstDxf01TypBaseCls::BaseWritToDL(DL_Attributes *poDLAttrib)
+{
+  poDLAttrib->setColor( this->color);
 }
 //=============================================================================
 // Constructor
 sstDxf01FncBaseCls::sstDxf01FncBaseCls()
 {
-
+  // this->oCsvRow.setDecType(1);  // set decimal point
+  this->oCsvRow.SetBracket(0,(char*)"\x22");  // quotation marks
 }
 //=============================================================================
