@@ -49,11 +49,13 @@ SOURCES       = sstDxf01Read.cpp \
 		sstdxf01Layer.cpp \
 		sstdxf01Block.cpp \
 		sstDxf01Arc.cpp \
+		sstDxf01Insert.cpp \
 		sstDxf01Base.cpp 
 OBJECTS       = sstDxf01Read.o \
 		sstdxf01Layer.o \
 		sstdxf01Block.o \
 		sstDxf01Arc.o \
+		sstDxf01Insert.o \
 		sstDxf01Base.o
 DIST          = ../../Qt/5.5/gcc/mkspecs/features/spec_pre.prf \
 		../../Qt/5.5/gcc/mkspecs/common/unix.conf \
@@ -187,6 +189,7 @@ DIST          = ../../Qt/5.5/gcc/mkspecs/features/spec_pre.prf \
 		sstdxf01Layer.cpp \
 		sstdxf01Block.cpp \
 		sstDxf01Arc.cpp \
+		sstDxf01Insert.cpp \
 		sstDxf01Base.cpp
 QMAKE_TARGET  = sst_dxf01_lib_d
 DESTDIR       = ../libs/#avoid trailing-slash linebreak
@@ -575,6 +578,19 @@ sstDxf01Arc.o: sstDxf01Arc.cpp ../dxflib/Header/dl_creationadapter.h \
 		../sst_rec04_lib/Header/sstRec04Lib.h \
 		Header/sstDxf01Lib.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sstDxf01Arc.o sstDxf01Arc.cpp
+
+sstDxf01Insert.o: sstDxf01Insert.cpp ../dxflib/Header/dl_creationadapter.h \
+		../dxflib/Header/dl_global.h \
+		../dxflib/Header/dl_creationinterface.h \
+		../dxflib/Header/dl_attributes.h \
+		../dxflib/Header/dl_codes.h \
+		../dxflib/Header/dl_entities.h \
+		../dxflib/Header/dl_extrusion.h \
+		../sst_str01_lib/Header/sstStr01Lib.h \
+		../sst_misc01_lib/Header/sstMisc01Lib.h \
+		../sst_rec04_lib/Header/sstRec04Lib.h \
+		Header/sstDxf01Lib.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sstDxf01Insert.o sstDxf01Insert.cpp
 
 sstDxf01Base.o: sstDxf01Base.cpp ../dxflib/Header/dl_creationadapter.h \
 		../dxflib/Header/dl_global.h \

@@ -32,6 +32,8 @@ sstDxf01ReadCls::sstDxf01ReadCls()
   int iStat=0;
 
   this->poDxfArcMem = new sstRec04Cls(sizeof(sstDxf01TypArcCls));
+  this->poDxfInsertMem = new sstRec04Cls(sizeof(sstDxf01TypInsertCls));
+
   this->poDxfLayMem = new sstRec04Cls(sizeof(sstDxf01TypLayCls));
   this->poDxfBlkMem = new sstRec04Cls(sizeof(sstDxf01TypBlkCls));
 
@@ -78,6 +80,33 @@ sstDxf01ReadCls::~sstDxf01ReadCls()
 
     iStat = oCsvFil.fcloseFil(0);
 
+    // Write all Inserts to Csv file
+
+    oCsvFilNam = this->oDxfFilNam + "_Insert.csv";
+    iStat = oCsvFil.fopenWr(0,(char*) oCsvFilNam.c_str());
+    assert(iStat >= 0);
+
+    sstDxf01FncInsertCls oDxfInsertCsv;
+    oCsvStr.clear();
+
+    oDxfInsertCsv.Csv_WriteHeader(0,&oCsvStr);
+    oCsvFil.Wr_StrDS1(0, &oCsvStr);
+
+    for(dREC04RECNUMTYP kk = 1; kk <= this->poDxfInsertMem->count(); kk++)
+    {
+      // int iVal=0;
+
+      sstDxf01TypInsertCls oDxfInsert;
+      this->poDxfInsertMem->Read(0,kk,&oDxfInsert);
+
+      oDxfInsert.setInsertID(kk);
+
+      oDxfInsertCsv.Csv_Write ( 0, &oDxfInsert, &oCsvStr);
+      oCsvFil.Wr_StrDS1(0, &oCsvStr);
+    }
+
+    iStat = oCsvFil.fcloseFil(0);
+
     // === Write all Layer to Csv file
 
     oCsvFilNam = this->oDxfFilNam + "_Layer.csv";
@@ -99,7 +128,6 @@ sstDxf01ReadCls::~sstDxf01ReadCls()
       oDxfLayCsv.Csv_Write ( 0, &oDxfLay, &oCsvStr);
 
       oCsvFil.Wr_StrDS1(0, &oCsvStr);
-      // printf("oRecMem_Int.Read(%d) = %d\n", k, iVal);
     }
 
     iStat = oCsvFil.fcloseFil(0);
@@ -125,13 +153,13 @@ sstDxf01ReadCls::~sstDxf01ReadCls()
       oDxfBlkCsv.Csv_Write ( 0, &oDxfBlk, &oCsvStr);
 
       oCsvFil.Wr_StrDS1(0, &oCsvStr);
-      // printf("oRecMem_Int.Read(%d) = %d\n", k, iVal);
     }
 
     iStat = oCsvFil.fcloseFil(0);
 
     delete(this->poDxfBlkMem);
     delete(this->poDxfLayMem);
+    delete(this->poDxfInsertMem);
     delete(this->poDxfArcMem);
 }
 //=============================================================================
@@ -151,7 +179,6 @@ void sstDxf01ReadCls::addLayer(const DL_LayerData& data)
     {
       // strncpy( LayDs.Nam, data.name.c_str(), dSSTDXFLAYERNAMELEN);
       LayDs.setName(data.name.c_str());
-      // LayDs.flags = data.flags;
       LayDs.setFlags( data.flags);
 
       // Write new record into record memory and update all trees
@@ -162,19 +189,20 @@ void sstDxf01ReadCls::addLayer(const DL_LayerData& data)
     {
       assert(0);
     }
-
-
 }
 //=============================================================================
 void sstDxf01ReadCls::addBlock(const DL_BlockData& data)
 {
+  int iStat = 0;
   sstDxf01TypBlkCls oBlk;
   dREC04RECNUMTYP dRecNo = 0;
 
   oBlk.setName( data.name.c_str());
   oActBlockNam = data.name;
 
-  this->poDxfBlkMem->WritNew( 0, &oBlk, &dRecNo);
+  // Write new record into record memory and update all trees
+  iStat = this->poDxfBlkMem->TreWriteNew ( 0, &oBlk, &dRecNo);
+  assert(iStat == 0);
 }
 //=============================================================================
 void sstDxf01ReadCls::endBlock()
@@ -186,6 +214,59 @@ void sstDxf01ReadCls::addPoint(const DL_PointData& data) {
     printf("POINT    (%6.3f, %6.3f, %6.3f)\n",
            data.x, data.y, data.z);
     printAttributes();
+}
+//=============================================================================
+void sstDxf01ReadCls::addInsert(const DL_InsertData& data)
+{
+  int iStat = 0;
+  std::string oLayerStr;
+  std::string oBlockStr;
+
+  sstDxf01TypInsertCls oDxfInsert;
+  oDxfInsert.ReadFromDL(data);
+  oDxfInsert.BaseReadFromDL(attributes);
+  dREC04RECNUMTYP dRecNo=0;
+  dREC04RECNUMTYP dLayRecNo=0;
+  dREC04RECNUMTYP dBlkRecNo=0;
+
+  // is it element in section entities or block??
+  if (this->oActBlockNam.length() > 0)
+  {  // Block
+    dREC04RECNUMTYP dNumBlocks = this->poDxfBlkMem->count();
+    oDxfInsert.setBlockID(dNumBlocks);
+  }
+  else
+  {  // entities
+    oLayerStr = attributes.getLayer();
+    // Find record with exact search value
+    iStat = this->poDxfLayMem->TreSeaEQ( 0, &this->oLayerTree, (char*) oLayerStr.c_str(), &dLayRecNo);
+    assert(iStat >= 0);
+    if (iStat == 0)
+    {
+      // layer not found in layer table
+      // write new layer data record with new name, take attributes from layer 0
+      oLayerStr = "0";
+      sstDxf01TypLayCls oLayRec;
+      iStat = this->poDxfLayMem->TreSeaEQ( 0, &this->oLayerTree, (char*) oLayerStr.c_str(), &dLayRecNo);
+      this->poDxfLayMem->Read(0,dLayRecNo,&oLayRec);
+      oLayerStr = attributes.getLayer();
+      oLayRec.setName(oLayerStr.c_str());
+      // Write new record into record memory and update all trees
+      iStat = this->poDxfLayMem->TreWriteNew ( 0, &oLayRec, &dLayRecNo);
+
+    }
+    oDxfInsert.setLayerID(dLayRecNo);
+
+    // Find block record with block name
+    oBlockStr = data.name;
+    iStat = this->poDxfBlkMem->TreSeaEQ( 0, &this->oBlockTree, (void*) oBlockStr.c_str(), &dBlkRecNo);
+    // assert(iStat >= 0);
+    assert(iStat == 1);  // exit, if block not found in block table
+    oDxfInsert.setBlockID(dBlkRecNo);
+  }
+  // write new insert record in insert table
+  iStat = this->poDxfInsertMem->WritNew(0,&oDxfInsert,&dRecNo);
+  assert(iStat == 0);
 }
 //=============================================================================
 void sstDxf01ReadCls::addLine(const DL_LineData& data) {

@@ -92,10 +92,7 @@ private:
     int width;
     // std::string lineType;
     int handle;
-
 };
-
-
 //==============================================================================
 /**
 * @brief sst Dxf Arc Class
@@ -310,6 +307,147 @@ private:
     int width;
     std::string lineType;
     int handle;
+};
+//==============================================================================//==============================================================================
+/**
+* @brief sst Dxf Arc Class
+*
+* More Comment
+*
+* Changed: 12.03.13  Re.
+*
+* @ingroup sstDxf01Lib
+*
+* @author Re.
+*
+* @date 12.03.13
+*/
+// ----------------------------------------------------------------------------
+class sstDxf01TypInsertCls : public sstDxf01TypBaseCls
+{
+  public:
+    sstDxf01TypInsertCls();  // Constructor
+    //==============================================================================
+    /**
+    * @brief // Set Test Data <BR>
+    * iStat= oSstDxfArc.SetTestData(iKey);
+    *
+    * @param iKey [in] For the moment 0
+    *
+    * @return Errorstate
+    *
+    * @retval   = 0: OK
+    * @retval   < 0: Unspecified Error
+    */
+    int SetTestData(int iKey);
+    //==============================================================================
+    /**
+    * @brief // read Insert data from dxflib arc <BR>
+    * oSstDxfInsert.ReadFromDL(poDLInsert);
+    *
+    * @param poDLInsert [in] dxflib Insert structure
+    */
+    // ----------------------------------------------------------------------------
+    void ReadFromDL(const DL_InsertData poDLInsert);
+    //==============================================================================
+    /**
+    * @brief // write Insert data to dxflib arc <BR>
+    * oSstDxfInsert.WritToDL(poDLInsert);
+    *
+    * @param poDLArc [out] dxflib arc structure
+    */
+    // ----------------------------------------------------------------------------
+    void WritToDL(DL_InsertData *poDLInsert);
+    //==============================================================================
+    //==============================================================================
+    /**
+    * @brief // Get Layer ID  <BR>
+    *
+    * @return LayerID
+    */
+    // ----------------------------------------------------------------------------
+    unsigned long getLayerID() const;
+    //==============================================================================
+    /**
+    * @brief // Set Layer ID  <BR>
+    *
+    * @param value [in] Set Layer ID
+    */
+    // ----------------------------------------------------------------------------
+    void setLayerID(unsigned long value);
+    //==============================================================================
+    /**
+    * @brief // Get Block ID  <BR>
+    *
+    * @return BlockID
+    */
+    // ----------------------------------------------------------------------------
+    unsigned long getBlockID() const;
+    //==============================================================================
+    /**
+    * @brief // Set Block ID  <BR>
+    *
+    * @param value [in] Set Block ID
+    */
+    // ----------------------------------------------------------------------------
+    void setBlockID(unsigned long value);
+    //==============================================================================
+    /**
+    * @brief // Get Arc ID  <BR>
+    *
+    * @return unsigned long Arc ID
+    */
+    // ----------------------------------------------------------------------------
+    unsigned long getInsertID() const;
+    //==============================================================================
+    /**
+    * @brief // Set Arc ID  <BR>
+    *
+    * @param value [in] Arc ID
+    */
+    // ----------------------------------------------------------------------------
+    void setInsertID(unsigned long value);
+    //==============================================================================
+
+    double getIpx() const;
+    void setIpx(double value);
+
+    double getIpy() const;
+    void setIpy(double value);
+
+    double getIpz() const;
+    void setIpz(double value);
+
+private:
+
+    unsigned long ulInsertID;
+    unsigned long ulLayerID;
+    unsigned long ulBlockID;
+
+    /*! Name of the referred block. */
+    std::string name;
+    /*! X Coordinate of insertion point. */
+    double ipx;
+    /*! Y Coordinate of insertion point. */
+    double ipy;
+    /*! Z Coordinate of insertion point. */
+    double ipz;
+    /*! X Scale factor. */
+    double sx;
+    /*! Y Scale factor. */
+    double sy;
+    /*! Z Scale factor. */
+    double sz;
+    /*! Rotation angle in degrees. */
+    double angle;
+    /*! Number of colums if we insert an array of the block or 1. */
+    int cols;
+    /*! Number of rows if we insert an array of the block or 1. */
+    int rows;
+    /*! Values for the spacing between cols. */
+    double colSp;
+    /*! Values for the spacing between rows. */
+    double rowSp;
 };
 //==============================================================================
 /**
@@ -565,8 +703,6 @@ class sstDxf01FncBaseCls
     sstStr01Cls oCsvRow;   /**< Csv String Convert object */
   private:
 };
-
- 
 //==============================================================================
 /**
 * @brief Definition Class sstDxf01FncArcCls
@@ -579,7 +715,7 @@ class sstDxf01FncBaseCls
 *
 * @author Re.
 *
-* @date 
+* @date
 */
 // ----------------------------------------------------------------------------
 class sstDxf01FncArcCls : public sstDxf01FncBaseCls
@@ -623,6 +759,82 @@ class sstDxf01FncArcCls : public sstDxf01FncBaseCls
     // ----------------------------------------------------------------------------
     int Csv_Write(int iKey,
                   sstDxf01TypArcCls *osstDxf01TypArcCls,
+                  std::string *ssstDxfLib_Str);  // Csv Write Function
+    //==============================================================================
+    /**
+    * @brief // write ARC titel row to csv file <BR>
+    * iStat = oCsvArc.Csv_WriteHeader ( 0, &oCsvStr)
+    *
+    * @param iKey    [in]  For the moment 0
+    * @param oCsvStr [out] return string titel row
+    *
+    * @return Errorstate
+    *
+    * @retval   = 0: OK
+    * @retval   < 0: Unspecified Error
+    */
+    // ----------------------------------------------------------------------------
+    int Csv_WriteHeader(int iKey, std::string *oCsvStr);
+    //==============================================================================
+
+  private:
+};
+//==============================================================================//==============================================================================
+/**
+* @brief Definition Class sstDxf01FncArcCls
+*
+* More Comment
+*
+* Changed:   Re.
+*
+* @ingroup sstDxf01Lib
+*
+* @author Re.
+*
+* @date
+*/
+// ----------------------------------------------------------------------------
+class sstDxf01FncInsertCls : public sstDxf01FncBaseCls
+{
+  public:
+    sstDxf01FncInsertCls();  // Constructor
+    //==============================================================================
+    /**
+    * @brief // Shortstory <BR>
+    * iStat = oCsvArc.Func_1(iKey)
+    *
+    * @param iKey [in] For the moment 0
+    * @param sErrTxt [in] For the moment 0
+    * @param ssstDxfLib_Str [in] For the moment 0
+    * @param osstDxf01TypArcCls [in] For the moment 0
+    *
+    * @return Errorstate
+    *
+    * @retval   = 0: OK
+    * @retval   < 0: Unspecified Error
+    */
+    // ----------------------------------------------------------------------------
+    int Csv_Read(int iKey,
+                 std::string *sErrTxt,
+                 std::string *ssstDxfLib_Str,
+                 sstDxf01TypInsertCls *osstDxf01TypArcCls);  // Csv Read Function
+    //==============================================================================
+    /**
+    * @brief // Shortstory <BR>
+    * iStat = oCsvArc.Func_1(iKey)
+    *
+    * @param iKey [in] For the moment 0
+    * @param osstDxf01TypArcCls [in] For the moment 0
+    * @param ssstDxfLib_Str [in] For the moment 0
+    *
+    * @return Errorstate
+    *
+    * @retval   = 0: OK
+    * @retval   < 0: Unspecified Error
+    */
+    // ----------------------------------------------------------------------------
+    int Csv_Write(int iKey,
+                  sstDxf01TypInsertCls *osstDxf01TypArcCls,
                   std::string *ssstDxfLib_Str);  // Csv Write Function
     //==============================================================================
     /**
@@ -852,6 +1064,7 @@ public:
     */
     // ----------------------------------------------------------------------------
     virtual void addPoint(const DL_PointData& data);
+    virtual void addInsert(const DL_InsertData& data);
     //==============================================================================
     /**
     * @brief // Process imported Layer data <BR>
@@ -925,17 +1138,20 @@ public:
     void SetDxfFilNam(char* cDxfFilNam);
     //==============================================================================
 private:
-    sstRec04Cls *poDxfArcMem;  /**< record memory for sst dxf arc elements */
+    sstRec04Cls *poDxfArcMem;     /**< record memory for sst dxf arc elements */
+    sstRec04Cls *poDxfInsertMem;  /**< record memory for sst dxf insert elements */
+
     sstRec04Cls *poDxfLayMem;  /**< record memory for sst dxf layer elements */
     sstRec04Cls *poDxfBlkMem;  /**< record memory for sst dxf block elements */
-    std::string oDxfFilNam;    /**< dxf file name without extension */
+
+    std::string oDxfFilNam;      /**< dxf file name without extension */
     std::string oActBlockNam;    /**< actual block name */
-    sstRec04TreeKeyCls oLayerTree;
-    sstRec04TreeKeyCls oBlockTree;
+
+    sstRec04TreeKeyCls oLayerTree; /**< sort tree for layers names in table */
+    sstRec04TreeKeyCls oBlockTree; /**< sort tree for block names in table */
 };
  
 #endif
 //
 // --------------------------------------------------------------- File End ----
-
 

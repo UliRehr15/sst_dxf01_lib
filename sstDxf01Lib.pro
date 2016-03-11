@@ -23,6 +23,7 @@ SOURCES		+=  \
     sstdxf01Layer.cpp \
     sstdxf01Block.cpp \
     sstDxf01Arc.cpp \
+    sstDxf01Insert.cpp \
     sstDxf01Base.cpp
 
 OTHER_FILES += README.md
